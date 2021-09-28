@@ -98,9 +98,11 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [kubernetes_config_map.default](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_deployment.default](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/deployment) | resource |
 | [kubernetes_persistent_volume.default](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/persistent_volume) | resource |
 | [kubernetes_persistent_volume_claim.default](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/persistent_volume_claim) | resource |
+| [kubernetes_secret.default](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_service.default](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service) | resource |
 
 ## Inputs
@@ -108,6 +110,10 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_app_label"></a> [app\_label](#input\_app\_label) | Value for the app label used for label matching | `string` | n/a | yes |
+| <a name="input_config_binary_data"></a> [config\_binary\_data](#input\_config\_binary\_data) | Map of binary data for the config map. | `map(any)` | n/a | yes |
+| <a name="input_config_map_data"></a> [config\_map\_data](#input\_config\_map\_data) | Map of data for the config map. | `map(any)` | n/a | yes |
+| <a name="input_config_map_enabled"></a> [config\_map\_enabled](#input\_config\_map\_enabled) | Enable the Kubernetes config map. | `any` | n/a | yes |
+| <a name="input_config_map_name"></a> [config\_map\_name](#input\_config\_map\_name) | Name to give the config map. | `any` | n/a | yes |
 | <a name="input_container_image"></a> [container\_image](#input\_container\_image) | Docker image for the k8s deployment | `string` | n/a | yes |
 | <a name="input_container_name"></a> [container\_name](#input\_container\_name) | Name of container for the k8s deployment | `string` | n/a | yes |
 | <a name="input_container_port"></a> [container\_port](#input\_container\_port) | Container port for the k8s deployment | `number` | n/a | yes |
@@ -137,6 +143,13 @@ No modules.
 | <a name="input_port_name"></a> [port\_name](#input\_port\_name) | Name of the service port | `string` | n/a | yes |
 | <a name="input_protocol"></a> [protocol](#input\_protocol) | k8s service protocol | `string` | n/a | yes |
 | <a name="input_replica_count"></a> [replica\_count](#input\_replica\_count) | k8s Deployment replica count | `number` | n/a | yes |
+| <a name="input_secret_annotations"></a> [secret\_annotations](#input\_secret\_annotations) | An unstructured key value map stored with the secret that may be used to store arbitrary metadata. | `any` | `null` | no |
+| <a name="input_secret_data"></a> [secret\_data](#input\_secret\_data) | A map of the secret data. | `map(any)` | `{}` | no |
+| <a name="input_secret_enable"></a> [secret\_enable](#input\_secret\_enable) | Enable Kubernetes secrets resource. | `bool` | `false` | no |
+| <a name="input_secret_labels"></a> [secret\_labels](#input\_secret\_labels) | Map of string keys and values that can be used to organize and categorize (scope and select) the secret. | `map(any)` | `{}` | no |
+| <a name="input_secret_name"></a> [secret\_name](#input\_secret\_name) | Name of the secret, must be unique. Cannot be updated. | `any` | `null` | no |
+| <a name="input_secret_namespace"></a> [secret\_namespace](#input\_secret\_namespace) | Namespace defines the space within which name of the secret must be unique. | `any` | `null` | no |
+| <a name="input_secret_type"></a> [secret\_type](#input\_secret\_type) | The secret type. Defaults to Opaque. See https://kubernetes.io/docs/concepts/configuration/secret/#secret-types for the different types. | `string` | `"Opaque"` | no |
 | <a name="input_service_name"></a> [service\_name](#input\_service\_name) | Name of the k8s service | `string` | n/a | yes |
 | <a name="input_target_port"></a> [target\_port](#input\_target\_port) | k8s service target port | `number` | n/a | yes |
 

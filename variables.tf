@@ -239,4 +239,3 @@ variable "config_map_enabled" {
 variable "config_map_name" {
   description = "Name to give the config map."
 }
-
