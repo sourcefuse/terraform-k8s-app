@@ -8,7 +8,7 @@ Terraform module for deploying an application to k8s
 
 ```hcl
 module "terraform-k8s-app" {
-  source = "git@github.com:sourcefuse/terraform-k8s-app.git"
+  source = "git::git@github.com:sourcefuse/terraform-k8s-app.git"
   
   for_each              = local.k8s_apps
   app_label             = each.value.app_label

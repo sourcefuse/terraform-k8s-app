@@ -176,3 +176,67 @@ variable "persistent_volume_claim_storage_size" {
   description = "Map describing the minimum amount of compute resources required."
   default     = null
 }
+
+
+####################################################
+## secrets
+####################################################
+variable "secret_annotations" {
+  description = "An unstructured key value map stored with the secret that may be used to store arbitrary metadata."
+  default     = null
+}
+
+variable "secret_data" {
+  description = "A map of the secret data."
+  type        = map(any)
+  default     = {}
+}
+
+variable "secret_enable" {
+  description = "Enable Kubernetes secrets resource."
+  type        = bool
+  default     = false
+}
+
+variable "secret_labels" {
+  description = "Map of string keys and values that can be used to organize and categorize (scope and select) the secret."
+  type        = map(any)
+  default     = {}
+}
+
+variable "secret_name" {
+  description = "Name of the secret, must be unique. Cannot be updated."
+  default     = null
+}
+
+variable "secret_namespace" {
+  description = "Namespace defines the space within which name of the secret must be unique."
+  default     = null
+}
+
+variable "secret_type" {
+  description = "The secret type. Defaults to Opaque. See https://kubernetes.io/docs/concepts/configuration/secret/#secret-types for the different types."
+  default     = "Opaque"
+}
+
+####################################################
+## config maps
+####################################################
+variable "config_binary_data" {
+  description = "Map of binary data for the config map."
+  type        = map(any)
+}
+
+variable "config_map_data" {
+  description = "Map of data for the config map."
+  type        = map(any)
+}
+
+variable "config_map_enabled" {
+  description = "Enable the Kubernetes config map."
+}
+
+variable "config_map_name" {
+  description = "Name to give the config map."
+}
+

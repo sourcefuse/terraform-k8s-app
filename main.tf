@@ -138,3 +138,33 @@ resource "kubernetes_persistent_volume_claim" "default" {
     }
   }
 }
+
+## secrets
+resource "kubernetes_secret" "default" {
+  count = var.secret_enable == true ? 1 : 0
+
+  data = var.secret_data
+  type = var.secret_type
+
+  metadata {
+    annotations = var.secret_annotations
+    labels      = var.secret_labels
+    name        = var.secret_name
+    namespace   = var.secret_namespace
+  }
+}
+
+## config maps
+resource "kubernetes_config_map" "default" {
+  count = var.config_map_enabled == true ? 1 : 0
+
+  data        = try(var.config_map_data, {})
+  binary_data = try(var.config_binary_data, {})
+
+  metadata {
+    name        = var.config_map_name
+    annotations = var.persistent_volume_claim_annotations
+    labels      = var.persistent_volume_claim_labels
+    namespace   = var.persistent_volume_claim_namespace
+  }
+}
