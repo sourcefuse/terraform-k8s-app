@@ -160,14 +160,11 @@ No modules.
 pre-commit install
 ```
 
-
 - Configure golang deps for tests
 ```sh
 > go get github.com/gruntwork-io/terratest/modules/terraform
 > go get github.com/stretchr/testify/assert
 ```
-
-
 
 ### Tests
 
@@ -177,8 +174,6 @@ pre-commit install
 ```sh
 go test
 ```
-
-
 
 ## Authors
 

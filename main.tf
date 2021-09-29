@@ -1,4 +1,3 @@
-
 resource "kubernetes_service" "default" {
   metadata {
     name      = var.service_name
