@@ -91,7 +91,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_app_label"></a> [app\_label](#input\_app\_label) | Value for the app label used for label matching | `string` | n/a | yes |
-| <a name="input_config_binary_data"></a> [config\_binary\_data](#input\_config\_binary\_data) | Map of binary data for the config map. | `map(any)` | n/a | yes |
+| <a name="input_config_map_binary_data"></a> [config\_map\_binary\_data](#input\_config\_map\_binary\_data) | Map of binary data for the config map. | `map(any)` | n/a | yes |
 | <a name="input_config_map_data"></a> [config\_map\_data](#input\_config\_map\_data) | Map of data for the config map. | `map(any)` | n/a | yes |
 | <a name="input_config_map_enabled"></a> [config\_map\_enabled](#input\_config\_map\_enabled) | Enable the Kubernetes config map. | `bool` | `false` | no |
 | <a name="input_config_map_name"></a> [config\_map\_name](#input\_config\_map\_name) | Name to give the config map. | `any` | n/a | yes |
