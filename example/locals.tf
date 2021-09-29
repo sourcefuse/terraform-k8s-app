@@ -23,19 +23,24 @@ locals {
       persistent_volume_claim_resource_request = tomap({ storage = "100Mi" })
 
       ## config maps
-      config_map_enabled     = false
+      config_map_enabled     = true
       config_map_binary_data = {}
-      config_map_data        = {}
-      config_map_name        = ""
+      config_map_data        = {
+        config_path = "/etc/nginx/nginx.conf"
+      }
+      config_map_name        = "${var.nginx_name}-config-map"
 
       ## secrets
-      secret_enable      = false
-      secret_annotations = {}
-      secret_data        = {}
-      secret_labels      = {}
+      secret_enable      = true
+      secret_labels      = tomap({ "io.sourceloop.service" = var.nginx_name })
       secret_name        = "${var.nginx_name}-secret"
       secret_namespace   = var.namespace
-      secret_type        = ""
+      secret_type        = "kubernetes.io/basic-auth"
+      secret_annotations = {}
+
+      secret_data = {
+        username = "foo"
+      }
     }
   }
 }
