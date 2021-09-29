@@ -6,6 +6,8 @@ Terraform module for deploying an application to k8s
 
 ## Usage
 
+<details open="true">
+
 ```hcl
 module "terraform-k8s-app" {
   source = "git::git@github.com:sourcefuse/terraform-k8s-app.git"
@@ -32,52 +34,31 @@ module "terraform-k8s-app" {
   persistent_volume_claim_resource_request = try(each.value.persistent_volume_claim_resource_request, {})
 
   environment_variables = each.value.environment_variables
-  
-  for_each              = local.k8s_apps
-  app_label             = each.value.app_label
-  container_image       = each.value.container_image
-  container_name        = each.value.container_name
-  container_port        = each.value.container_port
-  deployment_name       = each.value.deployment_name
-  namespace_name        = each.value.namespace_name
-  port                  = each.value.port
-  port_name             = each.value.port_name
-  protocol              = each.value.protocol
-  service_name          = each.value.service_name
-  target_port           = each.value.target_port
-  replica_count         = each.value.replica_count
+}
 
-  ## pvc
-  persistent_volume_claim_enable           = try(each.value.persistent_volume_claim_enable, false)
-  persistent_volume_claim_name             = try(each.value.persistent_volume_claim_name, null)
-  persistent_volume_claim_labels           = try(each.value.persistent_volume_claim_labels, {})
-  persistent_volume_claim_namespace        = try(each.value.persistent_volume_claim_namespace, null)
-  persistent_volume_claim_resource_request = try(each.value.persistent_volume_claim_resource_request, {})
-
-  environment_variables = each.value.environment_variables
-  
-  locals {
-    redis_host = "redis.${kubernetes_namespace.sourceloop_sandbox.metadata[0].name}.svc.cluster.local"
-    k8s_apps = {
-      redis_application = {
-        app_label             = "redis"
-        container_image       = var.redis_image
-        container_name        = "redis"
-        container_port        = 6379
-        deployment_name       = "redis"
-        namespace_name        = kubernetes_namespace.sourceloop_sandbox.metadata[0].name
-        port                  = 6379
-        port_name             = "6379"
-        protocol              = "TCP"
-        service_name          = "redis"
-        target_port           = 6379
-        replica_count         = 1
-        environment_variables = []
-      }
+locals {
+  redis_host = "redis.${kubernetes_namespace.sourceloop_sandbox.metadata[0].name}.svc.cluster.local"
+  k8s_apps = {
+    redis_application = {
+      app_label             = "redis"
+      container_image       = var.redis_image
+      container_name        = "redis"
+      container_port        = 6379
+      deployment_name       = "redis"
+      namespace_name        = kubernetes_namespace.sourceloop_sandbox.metadata[0].name
+      port                  = 6379
+      port_name             = "6379"
+      protocol              = "TCP"
+      service_name          = "redis"
+      target_port           = 6379
+      replica_count         = 1
+      environment_variables = []
     }
   }
 }
 ```
+
+</details>
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -112,7 +93,7 @@ No modules.
 | <a name="input_app_label"></a> [app\_label](#input\_app\_label) | Value for the app label used for label matching | `string` | n/a | yes |
 | <a name="input_config_binary_data"></a> [config\_binary\_data](#input\_config\_binary\_data) | Map of binary data for the config map. | `map(any)` | n/a | yes |
 | <a name="input_config_map_data"></a> [config\_map\_data](#input\_config\_map\_data) | Map of data for the config map. | `map(any)` | n/a | yes |
-| <a name="input_config_map_enabled"></a> [config\_map\_enabled](#input\_config\_map\_enabled) | Enable the Kubernetes config map. | `any` | n/a | yes |
+| <a name="input_config_map_enabled"></a> [config\_map\_enabled](#input\_config\_map\_enabled) | Enable the Kubernetes config map. | `bool` | `false` | no |
 | <a name="input_config_map_name"></a> [config\_map\_name](#input\_config\_map\_name) | Name to give the config map. | `any` | n/a | yes |
 | <a name="input_container_image"></a> [container\_image](#input\_container\_image) | Docker image for the k8s deployment | `string` | n/a | yes |
 | <a name="input_container_name"></a> [container\_name](#input\_container\_name) | Name of container for the k8s deployment | `string` | n/a | yes |

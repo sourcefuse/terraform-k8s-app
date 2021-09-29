@@ -222,7 +222,7 @@ variable "secret_type" {
 ####################################################
 ## config maps
 ####################################################
-variable "config_binary_data" {
+variable "config_map_binary_data" {
   description = "Map of binary data for the config map."
   type        = map(any)
 }
@@ -234,6 +234,8 @@ variable "config_map_data" {
 
 variable "config_map_enabled" {
   description = "Enable the Kubernetes config map."
+  type        = bool
+  default     = false
 }
 
 variable "config_map_name" {

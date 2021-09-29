@@ -159,7 +159,7 @@ resource "kubernetes_config_map" "default" {
   count = var.config_map_enabled == true ? 1 : 0
 
   data        = try(var.config_map_data, {})
-  binary_data = try(var.config_binary_data, {})
+  binary_data = try(var.config_map_binary_data, {})
 
   metadata {
     name        = var.config_map_name
