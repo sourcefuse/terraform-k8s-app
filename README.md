@@ -162,8 +162,16 @@ pre-commit install
 
 - Configure golang deps for tests
 ```sh
-> go get github.com/gruntwork-io/terratest/modules/terraform
-> go get github.com/stretchr/testify/assert
+go get github.com/gruntwork-io/terratest/modules/terraform
+go get github.com/gruntwork-io/terratest/modules/k8s
+go get github.com/stretchr/testify/assert
+go get testing
+go get fmt
+```
+-OR-  
+```shell
+cd ./tests/
+./go-test.sh 
 ```
 
 ### Tests
@@ -173,6 +181,11 @@ pre-commit install
 - In the test directory, run the below command
 ```sh
 go test
+```
+-OR-  
+```shell
+cd ./tests/
+./go-test.sh 
 ```
 
 ## Authors

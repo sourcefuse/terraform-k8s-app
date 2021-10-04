@@ -25,10 +25,10 @@ locals {
       ## config maps
       config_map_enabled     = true
       config_map_binary_data = {}
-      config_map_data        = {
+      config_map_data = {
         config_path = "/etc/nginx/nginx.conf"
       }
-      config_map_name        = "${var.nginx_name}-config-map"
+      config_map_name = "${var.nginx_name}-config-map"
 
       ## secrets
       secret_enable      = true
