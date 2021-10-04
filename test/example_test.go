@@ -1,12 +1,12 @@
 package test
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 
+	"github.com/gruntwork-io/terratest/modules/k8s"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	"github.com/gruntwork-io/terratest/modules/k8s"
 )
 
 func TestTerraformExample(t *testing.T) {
@@ -16,7 +16,7 @@ func TestTerraformExample(t *testing.T) {
 	}
 	defer terraform.Destroy(t, terraformOptions)
 
-  // example test values
+	// example test values
 	namespaceName := fmt.Sprintf("terratest")
 	secretName := fmt.Sprintf("nginx-secret")
 	serviceName := fmt.Sprintf("nginx")
@@ -27,7 +27,7 @@ func TestTerraformExample(t *testing.T) {
 
 	assert := assert.New(t)
 
-  // check terraform output is valid
+	// check terraform output is valid
 	kubernetesServiceNameOutputValue := terraform.Output(t, terraformOptions, "kubernetes_service_name")
 	assert.NotNil(kubernetesServiceNameOutputValue)
 	assert.Equal(serviceName, kubernetesServiceNameOutputValue)
