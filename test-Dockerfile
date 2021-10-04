@@ -1,0 +1,14 @@
+FROM golang:1.16-buster
+
+ARG TEST_DIR="/test"
+
+RUN mkdir -p $TEST_DIR
+
+COPY ["./test/", "./example", "$TEST_DIR/"]
+
+WORKDIR $TEST_DIR
+
+RUN chmod +x go-get.sh && \
+    ./go-get.sh
+
+ENTRYPOINT ["go", "test"]
