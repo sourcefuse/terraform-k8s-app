@@ -2,7 +2,7 @@ package test
 
 import (
 	"testing"
-  "fmt"
+	"fmt"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
