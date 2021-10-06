@@ -22,7 +22,7 @@ pipeline {
     }
     stage('Test') {
       when {
-        expression { env.BRANCH_NAME == ^(?!.*main).*$ }
+        expression { env.BRANCH_NAME != "main" }
       }
       steps {
         script {
