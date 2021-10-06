@@ -1,0 +1,25 @@
+FROM bitnami/kubectl:1.22 as kubectl
+FROM hashicorp/terraform:1.0.5 as terraform
+FROM golang:1.16-buster
+
+ARG PROJECT_DIR="/home/$USER/terraform-k8s-app" \
+ARG USER="tester"
+
+RUN mkdir -p $PROJECT_DIR
+
+COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /bin/
+COPY --from=terraform /bin/terraform /bin/
+COPY "./*.tf" "$PROJECT_DIR/"
+COPY "./test/" "$PROJECT_DIR/test/"
+COPY "./example/*.tf" "$PROJECT_DIR/example/"
+
+RUN useradd -ms /bin/bash $USER && \
+    chown -R $USER:$USER $PROJECT_DIR
+
+USER $USER
+WORKDIR $PROJECT_DIR/test
+
+RUN chmod +x go-*.sh && \
+    ./go-get.sh
+
+ENTRYPOINT ["go", "test"]
