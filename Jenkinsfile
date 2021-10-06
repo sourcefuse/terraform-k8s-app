@@ -8,10 +8,14 @@ pipeline {
       steps {
         script {
           sh('''
-              docker build -t terraform-k8s-app-test -f Dockerfile-test .
-              docker run -v /root/.kube/config:/home/tester/.kube/config:ro --net=host  terraform-k8s-app-test
-              docker rm terraform-k8s-app-test
+              pwd
+              ls -la $HOME
           ''')
+//           sh('''
+//               docker build -t terraform-k8s-app-test -f Dockerfile-test .
+//               docker run -v $HOME/.kube/config:/home/tester/.kube/config:ro --net=host  terraform-k8s-app-test
+//               docker rm terraform-k8s-app-test
+//           ''')
         }
       }
     }
