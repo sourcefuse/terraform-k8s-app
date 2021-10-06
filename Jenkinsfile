@@ -8,8 +8,7 @@ pipeline {
       steps {
         script {
           sh('''
-              pwd
-              ls -la $HOME
+              ls -la $HOME/.kube
           ''')
 //           sh('''
 //               docker build -t terraform-k8s-app-test -f Dockerfile-test .
