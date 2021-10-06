@@ -3,13 +3,14 @@ pipeline {
   stages {
     stage('Test') {
       when {
-        expression { env.BRANCH_NAME != "main" }
+        expression { env.BRANCH_NAME != 'main' }
       }
       steps {
         script {
           sh('''
               docker build -t terraform-k8s-app-test -f Dockerfile-test .
-              docker run -v $HOME/.kube/config:/home/tester/.kube/config:ro --net=host  terraform-k8s-app-test
+              docker run -v /root/.kube/config:/home/tester/.kube/config:ro --net=host  terraform-k8s-app-test
+              docker rm terraform-k8s-app-test
           ''')
         }
       }
@@ -17,7 +18,7 @@ pipeline {
 
     stage('Tag') {
       when {
-        expression { env.BRANCH_NAME == "main" }
+        expression { env.BRANCH_NAME == 'main' }
       }
       steps {
         script {
