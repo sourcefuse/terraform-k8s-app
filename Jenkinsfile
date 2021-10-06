@@ -8,7 +8,7 @@ pipeline {
       steps {
         script {
           sh('''
-              cd ${env.WORKSPACE}/test/
+              cd ./test/
               ./go-test.sh
           ''')
         }
