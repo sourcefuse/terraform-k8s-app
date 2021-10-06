@@ -8,7 +8,7 @@ pipeline {
       steps {
         script {
           sh('''
-              sudo ls -la $HOME/.kube/
+              sudo ls -la /.kube/
               sudo ls -la /root/.kube/config/
               ls -la $HOME/.kube/
               ls -la /home
