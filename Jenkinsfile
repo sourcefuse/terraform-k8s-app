@@ -12,6 +12,7 @@ pipeline {
               sudo ls -la /root/.kube/config/
               ls -la $HOME/.kube/
               ls -la /home
+              microk8s
           ''')
 //           sh('''
 //               docker build -t terraform-k8s-app-test -f Dockerfile-test .
