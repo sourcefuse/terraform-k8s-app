@@ -155,13 +155,17 @@ No modules.
 * [terraform-docs](https://github.com/segmentio/terraform-docs)
 
 ### Configurations
-* Configure pre-commit hooks
-```sh
-pre-commit install
-```
 
 ### Tests
 Tests are available in `test` directory located in the root of this project.    
+
+#### Adding a new test  
+When something new has been added to the terraform `example` configuration, it needs to be updated to include testing. 
+This can be achieved by adding the test to `test/example_test.go`.  
+
+* For more information on Terratest, please see their [_Getting Started_](https://terratest.gruntwork.io/docs/#getting-started) docs.  
+* For more information on k8s testing, see the [k8s docs](https://pkg.go.dev/github.com/gruntwork-io/terratest/modules/k8s?utm_source=godoc).
+
 
 #### Running with Docker
 The following instructions will be done from the root of the project.  
