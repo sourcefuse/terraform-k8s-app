@@ -8,8 +8,8 @@ pipeline {
       steps {
         script {
           sh('''
-              cd ./test/
-              ./go-test.sh
+              docker build -t terraform-k8s-app-test -f Dockerfile-test .
+              docker run -it -v $HOME/.kube/config:/home/tester/.kube/config:ro --net=host  terraform-k8s-app-test
           ''')
         }
       }
