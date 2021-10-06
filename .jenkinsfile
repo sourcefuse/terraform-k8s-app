@@ -1,7 +1,7 @@
 pipeline {
   agent { label 'jenkins-dynamic-slave' }
   stages {
-    stage('Build') {
+    stage('Tag') {
       when {
         expression { env.BRANCH_NAME == "main" }
       }
