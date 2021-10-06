@@ -1,6 +1,20 @@
 pipeline {
   agent { label 'jenkins-dynamic-slave' }
   stages {
+    stage('Test') {
+      when {
+        expression { env.BRANCH_NAME != "main" }
+      }
+      steps {
+        script {
+          sh('''
+              cd ${env.WORKSPACE}/test/
+              ./go-test.sh
+          ''')
+        }
+      }
+    }
+
     stage('Tag') {
       when {
         expression { env.BRANCH_NAME == "main" }
@@ -17,19 +31,6 @@ pipeline {
                 git tag -a \$VERSION -m \$VERSION
                 git push origin \$VERSION
             ''')
-        }
-      }
-    }
-    stage('Test') {
-      when {
-        expression { env.BRANCH_NAME != "main" }
-      }
-      steps {
-        script {
-          sh('''
-              cd tests
-              ./go-test.sh
-          ''')
         }
       }
     }
