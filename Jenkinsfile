@@ -8,7 +8,7 @@ pipeline {
       steps {
         script {
           sh('''
-              ls -la /.kube
+              sudo ls -la /.kube
               ls -la $(pwd)
           ''')
 //           sh('''
