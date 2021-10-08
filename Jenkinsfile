@@ -8,10 +8,8 @@ pipeline {
       steps {
         script {
           sh('''
-              ls -la /home/$USER/.kube/
-              sudo ls -la /.kube/
-              sudo ls -la /root/.kube/
-              ls -la
+              microk8s config > .kube/config
+              ls -la ./kube/
           ''')
 //           sh('''
 //               docker build -t terraform-k8s-app-test -f Dockerfile-test .
