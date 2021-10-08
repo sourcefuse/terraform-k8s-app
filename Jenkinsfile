@@ -8,7 +8,7 @@ pipeline {
       steps {
         script {
           sh('''
-              ls -la $USER/.kube/
+              ls -la /home/$USER/.kube/
               ls -la /.kube/
               ls -la
           ''')
