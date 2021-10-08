@@ -8,6 +8,7 @@ pipeline {
       steps {
         script {
           sh('''
+              mkdir -p .kube/
               microk8s config > .kube/config
               ls -la ./kube/
           ''')
