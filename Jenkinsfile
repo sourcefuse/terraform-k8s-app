@@ -10,13 +10,10 @@ pipeline {
           sh('''
               mkdir -p .kube/
               microk8s config > .kube/config
-              ls -la .kube/
+              docker build -t terraform-k8s-app-test -f Dockerfile-test .
+              docker run -v .kube/config:/home/tester/.kube/config:ro --net=host  terraform-k8s-app-test
+              docker rm terraform-k8s-app-test
           ''')
-//           sh('''
-//               docker build -t terraform-k8s-app-test -f Dockerfile-test .
-//               docker run -v $HOME/.kube/config:/home/tester/.kube/config:ro --net=host  terraform-k8s-app-test
-//               docker rm terraform-k8s-app-test
-//           ''')
         }
       }
     }
