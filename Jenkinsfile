@@ -10,7 +10,7 @@ pipeline {
           sh('''
               mkdir -p .kube/
               microk8s config > .kube/config
-              ls -la ./kube/
+              ls -la .kube/
           ''')
 //           sh('''
 //               docker build -t terraform-k8s-app-test -f Dockerfile-test .
