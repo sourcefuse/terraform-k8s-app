@@ -9,7 +9,8 @@ pipeline {
         script {
           sh('''
               ls -la /home/$USER/.kube/
-              ls -la /.kube/
+              sudo ls -la /.kube/
+              sudo ls -la /root/.kube/
               ls -la
           ''')
 //           sh('''
