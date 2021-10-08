@@ -11,7 +11,7 @@ pipeline {
               mkdir -p .kube/
               microk8s config > .kube/config
               docker build -t terraform-k8s-app-test -f Dockerfile-test .
-              docker run -v .kube/config:/home/tester/.kube/config:ro --net=host  terraform-k8s-app-test
+              docker run -v $PWD/.kube/config:/home/tester/.kube/config:ro --net=host  terraform-k8s-app-test
               docker rm terraform-k8s-app-test
           ''')
         }
