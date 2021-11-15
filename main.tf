@@ -85,7 +85,7 @@ resource "kubernetes_deployment" "default" {
 }
 
 locals {
-  secret_names = [try(kubernetes_secret.default.metadata[0].name, [])]
+  secret_names = [try(kubernetes_secret.default[0].metadata[0].name, [])]
 }
 
 ## pv and pvc
