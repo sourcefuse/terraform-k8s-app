@@ -68,24 +68,15 @@ resource "kubernetes_deployment" "default" {
             }
           }
 
-          dynamic "env_from" {
-            iterator = secrets
-            for_each = local.secret_names
-            content {
-              secret_ref {
-                name = secrets.key
-              }
+          env_from {
+            secret_ref {
+              name = try(kubernetes_secret.default[0].metadata[0].name, 0)
             }
           }
-
         }
       }
     }
   }
-}
-
-locals {
-  secret_names = [try(kubernetes_secret.default[0].metadata[0].name, [])]
 }
 
 ## pv and pvc
