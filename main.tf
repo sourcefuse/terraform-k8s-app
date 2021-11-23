@@ -22,7 +22,21 @@ resource "kubernetes_service" "default" {
   }
 }
 
+resource "time_sleep" "create_config" {
+  depends_on = [
+    kubernetes_config_map.default,
+    kubernetes_secret.default
+  ]
+
+  create_duration = "30s"
+}
+
 resource "kubernetes_deployment" "default" {
+
+  depends_on = [
+    time_sleep.create_config
+  ]
+
   metadata {
     name      = var.deployment_name
     namespace = var.namespace_name
@@ -71,6 +85,12 @@ resource "kubernetes_deployment" "default" {
           env_from {
             secret_ref {
               name = try(kubernetes_secret.default[0].metadata[0].name, 0)
+            }
+          }
+
+          nv_from {
+            config_map_ref {
+              name = try(kubernetes_config_map.default[0].metadata[0].name, "{}")
             }
           }
         }
