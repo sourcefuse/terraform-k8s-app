@@ -13,7 +13,7 @@ on:
 
 jobs:
   tflint:
-    runs-on: my-custom-runner
+    runs-on: ubuntu-latest
     name: tflint
     steps:
       - uses: actions/checkout@master
