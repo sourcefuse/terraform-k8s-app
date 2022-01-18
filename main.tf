@@ -1,4 +1,6 @@
 resource "kubernetes_service" "default" {
+  count = var.enable_kubernetes_service == true ? 1 : 0
+
   metadata {
     name      = var.service_name
     namespace = var.namespace_name
@@ -68,8 +70,15 @@ resource "kubernetes_deployment" "default" {
           name  = var.container_name
           image = var.container_image
 
-          port {
-            container_port = var.container_port
+          dynamic "port" {
+            for_each = {
+              for port in tomap({port = var.container_port}) : port => port
+              if var.container_port != null
+            }
+
+            content {
+              container_port = port.value.port
+            }
           }
 
           dynamic "env" {
@@ -77,20 +86,31 @@ resource "kubernetes_deployment" "default" {
             for_each = var.environment_variables
 
             content {
-              name  = environment_variable.value["name"]
-              value = environment_variable.value["value"]
+              name  = lookup(environment_variable.value, "name", null)
+              value = lookup(environment_variable.value, "value", null)
             }
           }
 
-          env_from {
-            secret_ref {
-              name = try(kubernetes_secret.default[0].metadata[0].name, 0)
-            }
-          }
+          // TODO - fix this section, its a temporary workaround
+          dynamic "env_from" {
+            for_each = {}
 
-          nv_from {
-            config_map_ref {
-              name = try(kubernetes_config_map.default[0].metadata[0].name, "{}")
+            content {
+              dynamic "secret_ref" {
+                for_each = {}
+
+                content {
+                  name = try(kubernetes_secret.default[0].metadata[0].name, "foo")
+                }
+              }
+
+              dynamic "config_map_ref" {
+                for_each = {}
+
+                content {
+                  name = try(kubernetes_config_map.default[0].metadata[0].name, "foo")
+                }
+              }
             }
           }
         }

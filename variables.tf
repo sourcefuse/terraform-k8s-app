@@ -1,3 +1,9 @@
+variable "enable_kubernetes_service" {
+  description = "Enable the kubernetes service."
+  type        = bool
+  default     = true
+}
+
 variable "service_name" {
   type        = string
   description = "Name of the k8s service"
