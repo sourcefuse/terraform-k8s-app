@@ -225,6 +225,11 @@ variable "secret_type" {
   default     = "Opaque"
 }
 
+variable "service_account_name" {
+  description = "Name of the service account to be used for this deployment."
+  default     = null
+}
+
 ####################################################
 ## config maps
 ####################################################

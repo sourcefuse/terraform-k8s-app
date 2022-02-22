@@ -66,6 +66,8 @@ resource "kubernetes_deployment" "default" {
       }
 
       spec {
+        service_account_name = var.service_account_name
+
         container {
           name  = var.container_name
           image = var.container_image
@@ -77,7 +79,7 @@ resource "kubernetes_deployment" "default" {
             }
 
             content {
-              container_port = port.value.port
+              container_port = port.value
             }
           }
 
@@ -93,22 +95,25 @@ resource "kubernetes_deployment" "default" {
 
           // TODO - fix this section, its a temporary workaround
           dynamic "env_from" {
+            // TODO - add (pseudo code): if var.deployment_env_from_enabled
             for_each = {}
 
             content {
               dynamic "secret_ref" {
-                for_each = {}
+                // TODO - add (pseudo code): for ref in var.deployment_secret_ref or kubernetes_secret.default[0].metadata[0].name
+                for_each = {name = kubernetes_secret.default[0].metadata.0.name}
 
                 content {
-                  name = try(kubernetes_secret.default[0].metadata[0].name, "foo")
+                  name = secret_ref.value
                 }
               }
 
               dynamic "config_map_ref" {
-                for_each = {}
+                // TODO - add (pseudo code): for map_ref in var.deployment_config_map_ref or kubernetes_config_map.default[0].metadata[0].name
+                for_each = {name = kubernetes_config_map.default[0].metadata.0.name}
 
                 content {
-                  name = try(kubernetes_config_map.default[0].metadata[0].name, "foo")
+                  name = config_map_ref.value
                 }
               }
             }
@@ -130,7 +135,6 @@ resource "kubernetes_persistent_volume" "default" {
   }
 
   // TODO - remove hardcoded values
-
   spec {
     access_modes                     = var.persistent_volume_access_modes
     persistent_volume_reclaim_policy = var.persistent_volume_reclaim_policy
