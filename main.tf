@@ -156,20 +156,20 @@ resource "kubernetes_persistent_volume" "default" {
     access_modes                     = var.persistent_volume_access_modes
     persistent_volume_reclaim_policy = var.persistent_volume_reclaim_policy
 
-#    node_affinity {
-#      required {
-#        node_selector_term {
-#          match_expressions {
-#            key      = "kubernetes.io/hostname"
-#            operator = "In"
-#
-#            values = [
-#              "localhost"
-#            ]
-#          }
-#        }
-#      }
-#    }
+    node_affinity {
+      required {
+        node_selector_term {
+          match_expressions {
+            key      = "kubernetes.io/hostname"
+            operator = "In"
+
+            values = [
+              "localhost"
+            ]
+          }
+        }
+      }
+    }
 
     capacity = {
       storage = var.persistent_volume_storage_size
