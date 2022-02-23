@@ -66,15 +66,30 @@ resource "kubernetes_deployment" "default" {
       }
 
       spec {
+        ####----------------- NEW -----------------####
         service_account_name = var.service_account_name
+
+        volume {
+          name = "backstage-secrets-store-inline"
+        }
+        ####----------------- ENDNEW -----------------####
 
         container {
           name  = var.container_name
           image = var.container_image
 
+          ####----------------- NEW -----------------####
+          // TODO - make this dynamic
+          volume_mount {
+            name       = "backstage-secrets-store-inline"
+            mount_path = "/mnt/secrets-store"
+            read_only  = true
+          }
+          ####----------------- ENDNEW -----------------####
+
           dynamic "port" {
             for_each = {
-              for port in tomap({port = var.container_port}) : port => port
+              for port in tomap({ port = var.container_port }) : port => port
               if var.container_port != null
             }
 
@@ -93,15 +108,16 @@ resource "kubernetes_deployment" "default" {
             }
           }
 
+          ####----------------- NEW -----------------####
           // TODO - fix this section, its a temporary workaround
           dynamic "env_from" {
             // TODO - add (pseudo code): if var.deployment_env_from_enabled
-            for_each = {}
+            for_each = {} #{ name = "secret_ref" }
 
             content {
               dynamic "secret_ref" {
                 // TODO - add (pseudo code): for ref in var.deployment_secret_ref or kubernetes_secret.default[0].metadata[0].name
-                for_each = {name = kubernetes_secret.default[0].metadata.0.name}
+                for_each = { name = kubernetes_secret.default[0].metadata.0.name }
 
                 content {
                   name = secret_ref.value
@@ -110,7 +126,7 @@ resource "kubernetes_deployment" "default" {
 
               dynamic "config_map_ref" {
                 // TODO - add (pseudo code): for map_ref in var.deployment_config_map_ref or kubernetes_config_map.default[0].metadata[0].name
-                for_each = {name = kubernetes_config_map.default[0].metadata.0.name}
+                for_each = { name = kubernetes_config_map.default[0].metadata.0.name }
 
                 content {
                   name = config_map_ref.value
@@ -118,6 +134,7 @@ resource "kubernetes_deployment" "default" {
               }
             }
           }
+          ####----------------- ENDNEW -----------------####
         }
       }
     }
@@ -139,29 +156,41 @@ resource "kubernetes_persistent_volume" "default" {
     access_modes                     = var.persistent_volume_access_modes
     persistent_volume_reclaim_policy = var.persistent_volume_reclaim_policy
 
-    node_affinity {
-      required {
-        node_selector_term {
-          match_expressions {
-            key      = "kubernetes.io/hostname"
-            operator = "In"
-
-            values = [
-              "localhost"
-            ]
-          }
-        }
-      }
-    }
+#    node_affinity {
+#      required {
+#        node_selector_term {
+#          match_expressions {
+#            key      = "kubernetes.io/hostname"
+#            operator = "In"
+#
+#            values = [
+#              "localhost"
+#            ]
+#          }
+#        }
+#      }
+#    }
 
     capacity = {
       storage = var.persistent_volume_storage_size
     }
 
+
     persistent_volume_source {
-      local {
-        path = var.persistent_volume_storage_path
+      ####----------------- NEW -----------------####
+      csi {
+        driver        = "secrets-store.csi.k8s.io"
+        volume_handle = "csi"
+        read_only     = true
+        volume_attributes = {
+          secretProviderClass: "backstage-aws-secrets"
+        }
       }
+      ####----------------- ENDNEW -----------------####
+
+      #      local {
+      #        path = var.persistent_volume_storage_path
+      #      }
     }
   }
 }
