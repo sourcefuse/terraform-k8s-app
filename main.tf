@@ -70,7 +70,16 @@ resource "kubernetes_deployment" "default" {
         service_account_name = var.service_account_name
 
         volume {
-          name = "backstage-secrets-store-inline"
+          name = var.persistent_volume_name
+          #          csi {
+          #            driver            = "secrets-store.csi.k8s.io"
+          ##            volume_handle     = "csi"
+          #            volume_handle     = ""
+          #            read_only         = true
+          #            volume_attributes = {
+          #              secretProviderClass : "backstage-aws-secrets"
+          #            }
+          #          }
         }
         ####----------------- ENDNEW -----------------####
 
@@ -81,7 +90,7 @@ resource "kubernetes_deployment" "default" {
           ####----------------- NEW -----------------####
           // TODO - make this dynamic
           volume_mount {
-            name       = "backstage-secrets-store-inline"
+            name       = var.persistent_volume_name
             mount_path = "/mnt/secrets-store"
             read_only  = true
           }
@@ -117,7 +126,9 @@ resource "kubernetes_deployment" "default" {
             content {
               dynamic "secret_ref" {
                 // TODO - add (pseudo code): for ref in var.deployment_secret_ref or kubernetes_secret.default[0].metadata[0].name
-                for_each = { name = kubernetes_secret.default[0].metadata.0.name }
+                for_each = {
+                  name = kubernetes_secret.default[0].metadata.0.name
+                }
 
                 content {
                   name = secret_ref.value
@@ -126,7 +137,9 @@ resource "kubernetes_deployment" "default" {
 
               dynamic "config_map_ref" {
                 // TODO - add (pseudo code): for map_ref in var.deployment_config_map_ref or kubernetes_config_map.default[0].metadata[0].name
-                for_each = { name = kubernetes_config_map.default[0].metadata.0.name }
+                for_each = {
+                  name = kubernetes_config_map.default[0].metadata.0.name
+                }
 
                 content {
                   name = config_map_ref.value
@@ -175,15 +188,15 @@ resource "kubernetes_persistent_volume" "default" {
       storage = var.persistent_volume_storage_size
     }
 
-
+    // TODO: make dynamic based off of input variable
     persistent_volume_source {
       ####----------------- NEW -----------------####
       csi {
         driver        = "secrets-store.csi.k8s.io"
-        volume_handle = "csi"
-        read_only     = true
+        volume_handle = null
+        #        volume_handle     = "csi"
         volume_attributes = {
-          secretProviderClass: "backstage-aws-secrets"
+          secretProviderClass : "backstage-aws-secrets"
         }
       }
       ####----------------- ENDNEW -----------------####

@@ -70,7 +70,7 @@ No requirements.
 | Name | Version |
 |------|---------|
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.6.1 |
-| <a name="provider_time"></a> [time](#provider\_time) | n/a |
+| <a name="provider_time"></a> [time](#provider\_time) | 0.7.2 |
 
 ## Modules
 
@@ -101,6 +101,7 @@ No modules.
 | <a name="input_container_name"></a> [container\_name](#input\_container\_name) | Name of container for the k8s deployment | `string` | n/a | yes |
 | <a name="input_container_port"></a> [container\_port](#input\_container\_port) | Container port for the k8s deployment | `number` | n/a | yes |
 | <a name="input_deployment_name"></a> [deployment\_name](#input\_deployment\_name) | Name of the k8s deployment | `string` | n/a | yes |
+| <a name="input_enable_kubernetes_service"></a> [enable\_kubernetes\_service](#input\_enable\_kubernetes\_service) | Enable the kubernetes service. | `bool` | `true` | no |
 | <a name="input_environment_variables"></a> [environment\_variables](#input\_environment\_variables) | List of maps for environment variables | `list(object({ name = string, value = string }))` | `[]` | no |
 | <a name="input_namespace_name"></a> [namespace\_name](#input\_namespace\_name) | Name of the k8s namespace | `string` | n/a | yes |
 | <a name="input_persistent_volume_access_modes"></a> [persistent\_volume\_access\_modes](#input\_persistent\_volume\_access\_modes) | Contains all ways the volume can be mounted. Valid values are ReadWriteOnce, ReadOnlyMany, ReadWriteMany. | `list(string)` | <pre>[<br>  "ReadWriteMany"<br>]</pre> | no |
@@ -133,6 +134,7 @@ No modules.
 | <a name="input_secret_name"></a> [secret\_name](#input\_secret\_name) | Name of the secret, must be unique. Cannot be updated. | `any` | `null` | no |
 | <a name="input_secret_namespace"></a> [secret\_namespace](#input\_secret\_namespace) | Namespace defines the space within which name of the secret must be unique. | `any` | `null` | no |
 | <a name="input_secret_type"></a> [secret\_type](#input\_secret\_type) | The secret type. Defaults to Opaque. See https://kubernetes.io/docs/concepts/configuration/secret/#secret-types for the different types. | `string` | `"Opaque"` | no |
+| <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | Name of the service account to be used for this deployment. | `any` | `null` | no |
 | <a name="input_service_name"></a> [service\_name](#input\_service\_name) | Name of the k8s service | `string` | n/a | yes |
 | <a name="input_target_port"></a> [target\_port](#input\_target\_port) | k8s service target port | `number` | n/a | yes |
 
