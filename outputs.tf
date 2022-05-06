@@ -1,11 +1,11 @@
 output "service_name" {
-  value = kubernetes_service.default.metadata[0].name
+  value = try(kubernetes_service.default[0].metadata[0].name, null)
 }
 
 output "service_port" {
-  value = kubernetes_service.default.spec[0].port[0].port
+  value = try(kubernetes_service.default[0].spec[0].port[0].port, null)
 }
 
 output "host" {
-  value = "${kubernetes_service.default.metadata[0].name}.${var.namespace_name}.svc.cluster.local"
+  value = try("${kubernetes_service.default[0].metadata[0].name}.${var.namespace_name}.svc.cluster.local", null)
 }
