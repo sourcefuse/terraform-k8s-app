@@ -183,7 +183,22 @@ variable "persistent_volume_claim_storage_size" {
   default     = null
 }
 
+variable "persistent_volume_secrets_driver" {
+  description = "Driver for persistent volume. Defaults to CSI driver setting"
+  default     = "secrets-store.csi.k8s.io"
+  type        = string
+}
 
+variable "persistent_volume_secret_provider_class" {
+  description = "Name of the secret provider class for CSI driver volume mounts for secret"
+  type        = string
+}
+
+variable "persistent_volume_mount_path" {
+  description = "Path to mount the persistent volume for secrets"
+  default     = "/mnt/secrets-store"
+  type        = string
+}
 ####################################################
 ## secrets
 ####################################################
@@ -229,6 +244,8 @@ variable "service_account_name" {
   description = "Name of the service account to be used for this deployment."
   default     = null
 }
+
+
 
 ####################################################
 ## config maps

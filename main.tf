@@ -66,35 +66,33 @@ resource "kubernetes_deployment" "default" {
       }
 
       spec {
-        ####----------------- NEW -----------------####
+        ####----------------- SECRETS -----------------####
         service_account_name = var.service_account_name
 
         volume {
           name = var.persistent_volume_name
-          #          csi {
-          #            driver            = "secrets-store.csi.k8s.io"
-          ##            volume_handle     = "csi"
-          #            volume_handle     = ""
-          #            read_only         = true
-          #            volume_attributes = {
-          #              secretProviderClass : "backstage-aws-secrets"
-          #            }
-          #          }
+          csi {
+            read_only = true
+            driver    = var.persistent_volume_secrets_driver
+            volume_attributes = {
+              secretProviderClass : var.persistent_volume_secret_provider_class
+            }
+          }
         }
-        ####----------------- ENDNEW -----------------####
+        ####----------------- SECRETS -----------------####
 
         container {
           name  = var.container_name
           image = var.container_image
 
-          ####----------------- NEW -----------------####
+          ####----------------- SECRETS -----------------####
           // TODO - make this dynamic
           volume_mount {
             name       = var.persistent_volume_name
-            mount_path = "/mnt/secrets-store"
+            mount_path = var.persistent_volume_mount_path
             read_only  = true
           }
-          ####----------------- ENDNEW -----------------####
+          ####----------------- SECRETS -----------------####
 
           dynamic "port" {
             for_each = {
@@ -117,7 +115,7 @@ resource "kubernetes_deployment" "default" {
             }
           }
 
-          ####----------------- NEW -----------------####
+          ####----------------- SECRETS -----------------####
           // TODO - fix this section, its a temporary workaround
           dynamic "env_from" {
             // TODO - add (pseudo code): if var.deployment_env_from_enabled
@@ -147,7 +145,7 @@ resource "kubernetes_deployment" "default" {
               }
             }
           }
-          ####----------------- ENDNEW -----------------####
+          ####----------------- SECRETS -----------------####
         }
       }
     }
@@ -190,20 +188,16 @@ resource "kubernetes_persistent_volume" "default" {
 
     // TODO: make dynamic based off of input variable
     persistent_volume_source {
-      ####----------------- NEW -----------------####
+      ####----------------- SECRETS -----------------####
       csi {
-        driver        = "secrets-store.csi.k8s.io"
+        driver        = var.persistent_volume_secrets_driver
         volume_handle = null
-        #        volume_handle     = "csi"
         volume_attributes = {
-          secretProviderClass : "backstage-aws-secrets"
+          secretProviderClass : var.persistent_volume_secret_provider_class
         }
       }
-      ####----------------- ENDNEW -----------------####
+      ####----------------- SECRETS -----------------####
 
-      #      local {
-      #        path = var.persistent_volume_storage_path
-      #      }
     }
   }
 }
