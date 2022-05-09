@@ -72,8 +72,9 @@ resource "kubernetes_deployment" "default" {
         volume {
           name = var.persistent_volume_name
           csi {
-            read_only = true
-            driver    = var.persistent_volume_secrets_driver
+            read_only     = true
+            volume_handle = null
+            driver        = var.persistent_volume_secrets_driver
             volume_attributes = {
               secretProviderClass : var.persistent_volume_secret_provider_class
             }
