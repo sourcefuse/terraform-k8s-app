@@ -72,9 +72,8 @@ resource "kubernetes_deployment" "default" {
         volume {
           name = var.persistent_volume_name
           csi {
-            read_only     = true
-            volume_handle = null
-            driver        = var.persistent_volume_secrets_driver
+            read_only         = true
+            driver            = var.persistent_volume_secrets_driver
             volume_attributes = {
               secretProviderClass : var.persistent_volume_secret_provider_class
             }
@@ -97,8 +96,8 @@ resource "kubernetes_deployment" "default" {
 
           dynamic "port" {
             for_each = {
-              for port in tomap({ port = var.container_port }) : port => port
-              if var.container_port != null
+            for port in tomap({ port = var.container_port }) : port => port
+            if var.container_port != null
             }
 
             content {
@@ -116,36 +115,46 @@ resource "kubernetes_deployment" "default" {
             }
           }
 
+#          env {
+#            name = "PG_HOST"
+#            value_from {
+#              secret_key_ref {
+#                name = "dev-backstage"
+#                key  = "POSTGRES_HOST"
+#              }
+#            }
+#          }
+
           ####----------------- SECRETS -----------------####
           // TODO - fix this section, its a temporary workaround
-          dynamic "env_from" {
-            // TODO - add (pseudo code): if var.deployment_env_from_enabled
-            for_each = {} #{ name = "secret_ref" }
-
-            content {
-              dynamic "secret_ref" {
-                // TODO - add (pseudo code): for ref in var.deployment_secret_ref or kubernetes_secret.default[0].metadata[0].name
-                for_each = {
-                  name = kubernetes_secret.default[0].metadata.0.name
-                }
-
-                content {
-                  name = secret_ref.value
-                }
-              }
-
-              dynamic "config_map_ref" {
-                // TODO - add (pseudo code): for map_ref in var.deployment_config_map_ref or kubernetes_config_map.default[0].metadata[0].name
-                for_each = {
-                  name = kubernetes_config_map.default[0].metadata.0.name
-                }
-
-                content {
-                  name = config_map_ref.value
-                }
-              }
-            }
-          }
+          #          dynamic "env_from" {
+          #            // TODO - add (pseudo code): if var.deployment_env_from_enabled
+          #            for_each = {} #{ name = "secret_ref" }
+          #
+          #            content {
+          #              dynamic "secret_ref" {
+          #                // TODO - add (pseudo code): for ref in var.deployment_secret_ref or kubernetes_secret.default[0].metadata[0].name
+          #                for_each = {
+          #                  name = kubernetes_secret.default[0].metadata.0.name
+          #                }
+          #
+          #                content {
+          #                  name = secret_ref.value
+          #                }
+          #              }
+          #
+          #              dynamic "config_map_ref" {
+          #                // TODO - add (pseudo code): for map_ref in var.deployment_config_map_ref or kubernetes_config_map.default[0].metadata[0].name
+          #                for_each = {
+          #                  name = kubernetes_config_map.default[0].metadata.0.name
+          #                }
+          #
+          #                content {
+          #                  name = config_map_ref.value
+          #                }
+          #              }
+          #            }
+          #          }
           ####----------------- SECRETS -----------------####
         }
       }
@@ -191,8 +200,8 @@ resource "kubernetes_persistent_volume" "default" {
     persistent_volume_source {
       ####----------------- SECRETS -----------------####
       csi {
-        driver        = var.persistent_volume_secrets_driver
-        volume_handle = null
+        driver            = var.persistent_volume_secrets_driver
+        volume_handle     = null
         volume_attributes = {
           secretProviderClass : var.persistent_volume_secret_provider_class
         }
