@@ -93,15 +93,17 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_app_label"></a> [app\_label](#input\_app\_label) | Value for the app label used for label matching | `string` | n/a | yes |
-| <a name="input_config_map_binary_data"></a> [config\_map\_binary\_data](#input\_config\_map\_binary\_data) | Map of binary data for the config map. | `map(any)` | n/a | yes |
-| <a name="input_config_map_data"></a> [config\_map\_data](#input\_config\_map\_data) | Map of data for the config map. | `map(any)` | n/a | yes |
+| <a name="input_config_map_binary_data"></a> [config\_map\_binary\_data](#input\_config\_map\_binary\_data) | Map of binary data for the config map. | `map(any)` | `{}` | no |
+| <a name="input_config_map_data"></a> [config\_map\_data](#input\_config\_map\_data) | Map of data for the config map. | `map(any)` | `{}` | no |
 | <a name="input_config_map_enabled"></a> [config\_map\_enabled](#input\_config\_map\_enabled) | Enable the Kubernetes config map. | `bool` | `false` | no |
-| <a name="input_config_map_name"></a> [config\_map\_name](#input\_config\_map\_name) | Name to give the config map. | `any` | n/a | yes |
+| <a name="input_config_map_name"></a> [config\_map\_name](#input\_config\_map\_name) | Name to give the config map. | `any` | `null` | no |
 | <a name="input_container_image"></a> [container\_image](#input\_container\_image) | Docker image for the k8s deployment | `string` | n/a | yes |
 | <a name="input_container_name"></a> [container\_name](#input\_container\_name) | Name of container for the k8s deployment | `string` | n/a | yes |
 | <a name="input_container_port"></a> [container\_port](#input\_container\_port) | Container port for the k8s deployment | `number` | n/a | yes |
+| <a name="input_csi_secret_volumes"></a> [csi\_secret\_volumes](#input\_csi\_secret\_volumes) | List of maps of CSI volumes. These are used to dynamically generate the volume specs. | <pre>list(object({<br>    volume_name = string,<br>    mount_path  = string,<br>    read_only   = bool,<br>    driver      = string,<br>    volume_attributes = object({<br>      secretProviderClass = string<br>    })<br>  }))</pre> | `[]` | no |
 | <a name="input_deployment_name"></a> [deployment\_name](#input\_deployment\_name) | Name of the k8s deployment | `string` | n/a | yes |
 | <a name="input_enable_kubernetes_service"></a> [enable\_kubernetes\_service](#input\_enable\_kubernetes\_service) | Enable the kubernetes service. | `bool` | `true` | no |
+| <a name="input_env_secret_refs"></a> [env\_secret\_refs](#input\_env\_secret\_refs) | List of secretKeyRefs to add to ENV variables. | <pre>list(object({<br>    env_var_name        = string,<br>    secret_key_ref_name = string,<br>    secret_key_ref_key  = string<br>  }))</pre> | `[]` | no |
 | <a name="input_environment_variables"></a> [environment\_variables](#input\_environment\_variables) | List of maps for environment variables | `list(object({ name = string, value = string }))` | `[]` | no |
 | <a name="input_namespace_name"></a> [namespace\_name](#input\_namespace\_name) | Name of the k8s namespace | `string` | n/a | yes |
 | <a name="input_persistent_volume_access_modes"></a> [persistent\_volume\_access\_modes](#input\_persistent\_volume\_access\_modes) | Contains all ways the volume can be mounted. Valid values are ReadWriteOnce, ReadOnlyMany, ReadWriteMany. | `list(string)` | <pre>[<br>  "ReadWriteMany"<br>]</pre> | no |
@@ -122,7 +124,7 @@ No modules.
 | <a name="input_persistent_volume_mount_path"></a> [persistent\_volume\_mount\_path](#input\_persistent\_volume\_mount\_path) | Path to mount the persistent volume for secrets | `string` | `"/mnt/secrets-store"` | no |
 | <a name="input_persistent_volume_name"></a> [persistent\_volume\_name](#input\_persistent\_volume\_name) | Name of the persistent volume, must be unique. Cannot be updated. | `any` | `null` | no |
 | <a name="input_persistent_volume_reclaim_policy"></a> [persistent\_volume\_reclaim\_policy](#input\_persistent\_volume\_reclaim\_policy) | What happens to a persistent volume when released from its claim. Valid options are Retain (default), Delete and Recycle. Recycling must be supported by the volume plugin underlying this persistent volume. | `string` | `"Delete"` | no |
-| <a name="input_persistent_volume_secret_provider_class"></a> [persistent\_volume\_secret\_provider\_class](#input\_persistent\_volume\_secret\_provider\_class) | Name of the secret provider class for CSI driver volume mounts for secret | `string` | n/a | yes |
+| <a name="input_persistent_volume_secret_provider_class"></a> [persistent\_volume\_secret\_provider\_class](#input\_persistent\_volume\_secret\_provider\_class) | Name of the secret provider class for CSI driver volume mounts for secret | `string` | `null` | no |
 | <a name="input_persistent_volume_secrets_driver"></a> [persistent\_volume\_secrets\_driver](#input\_persistent\_volume\_secrets\_driver) | Driver for persistent volume. Defaults to CSI driver setting | `string` | `"secrets-store.csi.k8s.io"` | no |
 | <a name="input_persistent_volume_storage_path"></a> [persistent\_volume\_storage\_path](#input\_persistent\_volume\_storage\_path) | Path of the directory on the host. | `any` | `null` | no |
 | <a name="input_persistent_volume_storage_size"></a> [persistent\_volume\_storage\_size](#input\_persistent\_volume\_storage\_size) | Persistent volume size. | `string` | `"1Gi"` | no |
