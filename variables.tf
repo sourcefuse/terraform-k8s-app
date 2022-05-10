@@ -70,6 +70,30 @@ variable "environment_variables" {
   default     = []
 }
 
+variable "csi_secret_volumes" {
+  description = "List of maps of CSI volumes. These are used to dynamically generate the volume specs."
+  type = list(object({
+    volume_name = string,
+    mount_path  = string,
+    read_only   = bool,
+    driver      = string,
+    volume_attributes = object({
+      secretProviderClass = string
+    })
+  }))
+  default = []
+}
+
+
+variable "env_secret_refs" {
+  description = "List of secretKeyRefs to add to ENV variables."
+  type = list(object({
+    env_var_name        = string,
+    secret_key_ref_name = string,
+    secret_key_ref_key  = string
+  }))
+  default = []
+}
 ####################################################
 ## persistent volume and claims
 ####################################################
@@ -178,6 +202,7 @@ variable "persistent_volume_claim_storage_class_name" {
   default     = null
 }
 
+// TODO: determine if these are needed right now
 variable "persistent_volume_claim_storage_size" {
   description = "Map describing the minimum amount of compute resources required."
   default     = null
@@ -192,6 +217,7 @@ variable "persistent_volume_secrets_driver" {
 variable "persistent_volume_secret_provider_class" {
   description = "Name of the secret provider class for CSI driver volume mounts for secret"
   type        = string
+  default     = null
 }
 
 variable "persistent_volume_mount_path" {
@@ -245,19 +271,19 @@ variable "service_account_name" {
   default     = null
 }
 
-
-
 ####################################################
 ## config maps
 ####################################################
 variable "config_map_binary_data" {
   description = "Map of binary data for the config map."
   type        = map(any)
+  default     = {}
 }
 
 variable "config_map_data" {
   description = "Map of data for the config map."
   type        = map(any)
+  default     = {}
 }
 
 variable "config_map_enabled" {
@@ -268,4 +294,5 @@ variable "config_map_enabled" {
 
 variable "config_map_name" {
   description = "Name to give the config map."
+  default     = null
 }

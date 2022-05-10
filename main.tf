@@ -66,38 +66,40 @@ resource "kubernetes_deployment" "default" {
       }
 
       spec {
-        ####----------------- SECRETS -----------------####
         service_account_name = var.service_account_name
 
-        volume {
-          name = var.persistent_volume_name
-          csi {
-            read_only         = true
-            driver            = var.persistent_volume_secrets_driver
-            volume_attributes = {
-              secretProviderClass : var.persistent_volume_secret_provider_class
+        dynamic "volume" {
+          for_each = var.csi_secret_volumes
+          iterator = csi_secret_volume
+          content {
+            name = lookup(csi_secret_volume.value, "volume_name", null)
+            csi {
+              read_only         = lookup(csi_secret_volume.value, "read_only", null)
+              driver            = lookup(csi_secret_volume.value, "driver", null)
+              volume_attributes = lookup(csi_secret_volume.value, "volume_attributes", null)
             }
           }
         }
-        ####----------------- SECRETS -----------------####
 
         container {
           name  = var.container_name
           image = var.container_image
 
-          ####----------------- SECRETS -----------------####
-          // TODO - make this dynamic
-          volume_mount {
-            name       = var.persistent_volume_name
-            mount_path = var.persistent_volume_mount_path
-            read_only  = true
+          dynamic "volume_mount" {
+            for_each = var.csi_secret_volumes
+            iterator = csi_secret_volume
+
+            content {
+              name       = lookup(csi_secret_volume.value, "volume_name", null)
+              mount_path = lookup(csi_secret_volume.value, "mount_path", null)
+              read_only  = lookup(csi_secret_volume.value, "read_only", null)
+            }
           }
-          ####----------------- SECRETS -----------------####
 
           dynamic "port" {
             for_each = {
-            for port in tomap({ port = var.container_port }) : port => port
-            if var.container_port != null
+              for port in tomap({ port = var.container_port }) : port => port
+              if var.container_port != null
             }
 
             content {
@@ -115,47 +117,19 @@ resource "kubernetes_deployment" "default" {
             }
           }
 
-#          env {
-#            name = "PG_HOST"
-#            value_from {
-#              secret_key_ref {
-#                name = "dev-backstage"
-#                key  = "POSTGRES_HOST"
-#              }
-#            }
-#          }
-
-          ####----------------- SECRETS -----------------####
-          // TODO - fix this section, its a temporary workaround
-          #          dynamic "env_from" {
-          #            // TODO - add (pseudo code): if var.deployment_env_from_enabled
-          #            for_each = {} #{ name = "secret_ref" }
-          #
-          #            content {
-          #              dynamic "secret_ref" {
-          #                // TODO - add (pseudo code): for ref in var.deployment_secret_ref or kubernetes_secret.default[0].metadata[0].name
-          #                for_each = {
-          #                  name = kubernetes_secret.default[0].metadata.0.name
-          #                }
-          #
-          #                content {
-          #                  name = secret_ref.value
-          #                }
-          #              }
-          #
-          #              dynamic "config_map_ref" {
-          #                // TODO - add (pseudo code): for map_ref in var.deployment_config_map_ref or kubernetes_config_map.default[0].metadata[0].name
-          #                for_each = {
-          #                  name = kubernetes_config_map.default[0].metadata.0.name
-          #                }
-          #
-          #                content {
-          #                  name = config_map_ref.value
-          #                }
-          #              }
-          #            }
-          #          }
-          ####----------------- SECRETS -----------------####
+          dynamic "env" {
+            iterator = env_secret_key_ref
+            for_each = var.env_secret_refs
+            content {
+              name = lookup(env_secret_key_ref.value, "env_var_name", null)
+              value_from {
+                secret_key_ref {
+                  name = lookup(env_secret_key_ref.value, "secret_key_ref_name", null)
+                  key  = lookup(env_secret_key_ref.value, "secret_key_ref_key", null)
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -163,6 +137,7 @@ resource "kubernetes_deployment" "default" {
 }
 
 ## pv and pvc
+## TODO: clean this up
 resource "kubernetes_persistent_volume" "default" {
   count = var.persistent_volume_enable == true ? 1 : 0
 
@@ -200,8 +175,8 @@ resource "kubernetes_persistent_volume" "default" {
     persistent_volume_source {
       ####----------------- SECRETS -----------------####
       csi {
-        driver            = var.persistent_volume_secrets_driver
-        volume_handle     = null
+        driver        = var.persistent_volume_secrets_driver
+        volume_handle = null
         volume_attributes = {
           secretProviderClass : var.persistent_volume_secret_provider_class
         }
@@ -235,6 +210,7 @@ resource "kubernetes_persistent_volume_claim" "default" {
 }
 
 ## secrets
+## TODO: should this be created outside of this module. When would we use it?
 resource "kubernetes_secret" "default" {
   count = var.secret_enable == true ? 1 : 0
 
