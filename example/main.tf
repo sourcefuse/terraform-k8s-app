@@ -28,6 +28,10 @@ module "example" {
   target_port     = each.value.target_port
   replica_count   = each.value.replica_count
 
+  container_resources_enabled  = each.value.container_resources_enabled
+  container_resources_limits   = each.value.container_resources_limits
+  container_resources_requests = each.value.container_resources_requests
+
   environment_variables = each.value.environment_variables
 
   ## pvc

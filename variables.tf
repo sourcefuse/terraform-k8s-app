@@ -59,6 +59,36 @@ variable "container_port" {
   description = "Container port for the k8s deployment"
 }
 
+variable "container_resources_enabled" {
+  type        = bool
+  description = "Enable container resource limits / requests."
+  default     = false
+}
+
+variable "container_resources_limits" {
+  type = object({
+    cpu    = string
+    memory = string
+  })
+  description = "Describes the maximum amount of compute resources allowed. For more info see http://kubernetes.io/docs/user-guide/compute-resources"
+  default = {
+    cpu    = "0.5"
+    memory = "512Mi"
+  }
+}
+
+variable "container_resources_requests" {
+  type = object({
+    cpu    = string
+    memory = string
+  })
+  description = "Describes the minimum amount of compute resources required."
+  default = {
+    cpu    = "250m"
+    memory = "50Mi"
+  }
+}
+
 variable "replica_count" {
   type        = number
   description = "k8s Deployment replica count"

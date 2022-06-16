@@ -77,6 +77,7 @@ resource "kubernetes_deployment" "default" {
               read_only         = lookup(csi_secret_volume.value, "read_only", null)
               driver            = lookup(csi_secret_volume.value, "driver", null)
               volume_attributes = lookup(csi_secret_volume.value, "volume_attributes", null)
+              volume_handle     = null
             }
           }
         }
@@ -84,6 +85,15 @@ resource "kubernetes_deployment" "default" {
         container {
           name  = var.container_name
           image = var.container_image
+
+          dynamic "resources" {
+            for_each = { for n in { name = "resource" } : n => n if var.container_resources_enabled == true }
+
+            content {
+              limits   = var.container_resources_limits
+              requests = var.container_resources_requests
+            }
+          }
 
           dynamic "volume_mount" {
             for_each = var.csi_secret_volumes
