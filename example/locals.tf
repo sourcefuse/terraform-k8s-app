@@ -15,6 +15,17 @@ locals {
       replica_count         = 1
       environment_variables = []
 
+      container_resources_enabled = true
+      container_resources_requests = {
+        cpu    = "1"
+        memory = "1Gi"
+      }
+
+      container_resources_limits = {
+        cpu    = "0.5"
+        memory = "256Mi"
+      }
+
       ## pvc
       persistent_volume_claim_enable           = false
       persistent_volume_claim_name             = "${var.nginx_name}-pvc"
