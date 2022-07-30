@@ -2,10 +2,10 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: ${{ values.component_id | dump }}
-  description: ${{ values.description | dump }}
+  name: terraform-k8s-app
+  description: Kubernetes application management with Terraform.
   annotations:
-    github.com/project-slug: ${{ values.destination.owner + "/" + values.destination.repo }}
+    github.com/project-slug: https://github.com/sourcefuse/terraform-k8s-app
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service
