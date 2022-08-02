@@ -5,7 +5,7 @@ metadata:
   name: terraform-k8s-app
   description: Kubernetes application management with Terraform.
   annotations:
-    github.com/project-slug: https://github.com/sourcefuse/terraform-k8s-app
+    github.com/project-slug: sourcefuse/terraform-k8s-app
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service
