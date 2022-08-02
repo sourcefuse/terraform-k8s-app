@@ -3,6 +3,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: terraform-k8s-app
+  namespace: arc
   description: Kubernetes application management with Terraform.
   annotations:
     github.com/project-slug: sourcefuse/terraform-k8s-app
