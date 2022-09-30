@@ -208,7 +208,7 @@ resource "kubernetes_persistent_volume_claim" "default" {
 
   spec {
     access_modes       = var.persistent_volume_claim_access_modes
-    volume_name        = try(kubernetes_persistent_volume.default[0].metadata.0.name, var.persistent_volume_claim_volume_name)
+    volume_name        = try(kubernetes_persistent_volume.default[0].metadata[0].name, var.persistent_volume_claim_volume_name)
     storage_class_name = var.persistent_volume_claim_storage_class_name
 
     resources {

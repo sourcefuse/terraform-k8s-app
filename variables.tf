@@ -154,21 +154,25 @@ variable "persistent_volume_labels" {
 
 variable "persistent_volume_name" {
   description = "Name of the persistent volume, must be unique. Cannot be updated."
+  type        = string
   default     = null
 }
 
 variable "persistent_volume_reclaim_policy" {
   description = "What happens to a persistent volume when released from its claim. Valid options are Retain (default), Delete and Recycle. Recycling must be supported by the volume plugin underlying this persistent volume."
+  type        = string
   default     = "Delete"
 }
 
-variable "persistent_volume_storage_path" {
-  description = "Path of the directory on the host."
-  default     = null
-}
+# variable "persistent_volume_storage_path" {
+#   description = "Path of the directory on the host."
+#   type = string
+#   default     = null
+# }
 
 variable "persistent_volume_storage_size" {
   description = "Persistent volume size."
+  type        = string
   default     = "1Gi"
 }
 
@@ -199,16 +203,19 @@ variable "persistent_volume_claim_labels" {
 
 variable "persistent_volume_claim_name" {
   description = "Name of the persistent volume claim, must be unique. Cannot be updated."
+  type        = string
   default     = null
 }
 
 variable "persistent_volume_claim_namespace" {
   description = "Namespace defines the space within which name of the persistent volume claim must be unique."
+  type        = string
   default     = null
 }
 
 variable "persistent_volume_claim_volume_name" {
   description = "The binding reference to the PersistentVolume backing this claim."
+  type        = string
   default     = null
 }
 
@@ -229,14 +236,16 @@ variable "persistent_volume_claim_resource_request" {
 
 variable "persistent_volume_claim_storage_class_name" {
   description = "Name of the storage class requested by the claim."
+  type        = string
   default     = null
 }
 
 // TODO: determine if these are needed right now
-variable "persistent_volume_claim_storage_size" {
-  description = "Map describing the minimum amount of compute resources required."
-  default     = null
-}
+# variable "persistent_volume_claim_storage_size" {
+#   description = "Map describing the minimum amount of compute resources required."
+#   type = map(any)
+#   default     = null
+# }
 
 variable "persistent_volume_secrets_driver" {
   description = "Driver for persistent volume. Defaults to CSI driver setting"
@@ -250,16 +259,17 @@ variable "persistent_volume_secret_provider_class" {
   default     = null
 }
 
-variable "persistent_volume_mount_path" {
-  description = "Path to mount the persistent volume for secrets"
-  default     = "/mnt/secrets-store"
-  type        = string
-}
+# variable "persistent_volume_mount_path" {
+#   description = "Path to mount the persistent volume for secrets"
+#   default     = "/mnt/secrets-store"
+#   type        = string
+# }
 ####################################################
 ## secrets
 ####################################################
 variable "secret_annotations" {
   description = "An unstructured key value map stored with the secret that may be used to store arbitrary metadata."
+  type        = map(any)
   default     = null
 }
 
@@ -283,21 +293,25 @@ variable "secret_labels" {
 
 variable "secret_name" {
   description = "Name of the secret, must be unique. Cannot be updated."
+  type        = string
   default     = null
 }
 
 variable "secret_namespace" {
   description = "Namespace defines the space within which name of the secret must be unique."
+  type        = string
   default     = null
 }
 
 variable "secret_type" {
   description = "The secret type. Defaults to Opaque. See https://kubernetes.io/docs/concepts/configuration/secret/#secret-types for the different types."
+  type        = string
   default     = "Opaque"
 }
 
 variable "service_account_name" {
   description = "Name of the service account to be used for this deployment."
+  type        = string
   default     = null
 }
 
@@ -324,5 +338,6 @@ variable "config_map_enabled" {
 
 variable "config_map_name" {
   description = "Name to give the config map."
+  type        = string
   default     = null
 }
