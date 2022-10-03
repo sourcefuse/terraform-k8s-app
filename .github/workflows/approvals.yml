@@ -6,7 +6,9 @@ on: pull_request_review
 
 jobs:
   labelWhenApproved:
-    runs-on: ubuntu-latest
+    runs-on:
+      - ubuntu-latest
+
     steps:
       - name: Label when approved
         uses: pullreminders/label-when-approved-action@master
