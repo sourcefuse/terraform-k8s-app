@@ -7,12 +7,12 @@ terraform {
   required_providers {
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 2.9.0"
+      version = "= 2.14.0"
     }
 
     time = {
       source  = "hashicorp/time"
-      version = ">= 0.8.0"
+      version = ">= 0.7.2"
     }
   }
 }
