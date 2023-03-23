@@ -18,7 +18,7 @@ jobs:
         with:
           source_file: 'README.md'
           destination_repo: 'sourcefuse/arc-docs'
-          destination_folder: 'docs/arc-iac-docs/modules/erraform-k8s-app'
+          destination_folder: 'docs/arc-iac-docs/modules/terraform-k8s-app'
           user_email: 'saurabh.jindal@gmail.com'
           user_name: 'saurabhjindal-SF'
           commit_message: ${{ github.event.head_commit.message }}
