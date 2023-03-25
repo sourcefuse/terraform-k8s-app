@@ -8,17 +8,4 @@ ignore:
         reason: Container is running without root user control
         expires: 2025-04-01T00:00:00.000Z
         created: 2023-03-23T18:20:39.256Z
-
-   SNYK-CC-K8S-6:
-    - main.tf > resource > kubernetes_deployment[default] > spec > spec > template >
-                container[0] > security_context > capabilities:
-        reason: Container does not drop all default capabilities
-        expires: 2025-04-01T00:00:00.000Z
-        created: 2023-03-23T18:20:39.256Z    
-
-   SNYK-CC-K8S-9:
-    - main.tf > resource > kubernetes_deployment[default] > spec > template > spec >
-                container[0] > security_context > allow_privilege_escalation:
-        reason: Container is running without privilege escalation control
-        expires: 2025-04-01T00:00:00.000Z
-        created: 2023-03-23T18:20:39.256Z       
+   
