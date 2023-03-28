@@ -1,3 +1,4 @@
+---
 site_name: terraform-k8s-app
 site_description: Kubernetes application management with Terraform.
 plugins:
