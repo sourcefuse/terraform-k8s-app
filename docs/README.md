@@ -11,7 +11,7 @@ Terraform module for deploying an application to a Kubernetes cluster.
 ```hcl
 module "terraform-k8s-app" {
   source = "git::https://github.com/sourcefuse/terraform-k8s-app.git"
-  
+
   for_each              = local.k8s_apps
   app_label             = each.value.app_label
   container_image       = each.value.container_image
@@ -169,10 +169,10 @@ No modules.
 ### Configurations
 
 ### Tests
-Tests are available in `test` directory located in the root of this project.    
+Tests are available in `test` directory located in the root of this project.  
 
 #### Adding a new test  
-When something new has been added to the terraform `example` configuration, it needs to be updated to include testing. 
+When something new has been added to the terraform `example` configuration, it needs to be updated to include testing.
 This can be achieved by adding the test to `test/example_test.go`.  
 
 * For more information on Terratest, please see their [_Getting Started_](https://terratest.gruntwork.io/docs/#getting-started) docs.  
@@ -186,7 +186,7 @@ The following instructions will be done from the root of the project.
   ```shell
   docker build -t terraform-k8s-app-test -f Dockerfile-test .
   ```
-  
+
 * Start the container:
   ```shell
   docker run -it -v $HOME/.kube/config:/home/tester/.kube/config:ro --net=host  terraform-k8s-app-test
@@ -205,20 +205,20 @@ The following instructions will be done from the root of the project.
   ```
 
   **-OR-**  
-  
+
   ```shell
-  ./go-get.sh 
+  ./go-get.sh
   ```
 
 * From the `test` directory, run the below command:
   ```sh
   go test
   ```
-  
+
   **-OR-**  
-  
+
   ```shell
-  ./go-test.sh 
+  ./go-test.sh
   ```
 
 ## Authors
