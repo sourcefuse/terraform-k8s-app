@@ -1,6 +1,6 @@
 FROM bitnami/kubectl:1.22 as kubectl
 FROM hashicorp/terraform:1.0.5 as terraform
-FROM golang:1.20.1-buster
+FROM golang:1-buster
 
 ARG PROJECT_DIR="/home/$USER/terraform-k8s-app" \
 ARG USER="tester"
