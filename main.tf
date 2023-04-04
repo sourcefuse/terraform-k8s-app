@@ -78,7 +78,6 @@ resource "kubernetes_deployment" "default" {
               driver            = lookup(csi_secret_volume.value, "driver", null)
               volume_attributes = lookup(csi_secret_volume.value, "volume_attributes", null)
               volume_handle     = lookup(csi_secret_volume.value, "volume_handle", null)
-
             }
           }
         }
